@@ -1,0 +1,13 @@
+[
+  {
+    title: 'web-push-notifications.git'
+    group: 'syn-net'
+    paths: [
+      'syn-net/web-push-notifications.git'
+    ]
+    devMode: false
+    settings:
+      'editor.tabLength': 2
+      'editor.showInvisibles': true
+  }
+]
