@@ -1,3 +1,17 @@
+/*
+import { readFile } from 'fs/promises';
+
+let DEFAULT_JSON_FILE_OPTS = {};
+export async function readJSONFile(path, options = DEFAULT_JSON_FILE_OPTS) {
+  return JSON.parse(
+    await readFile(
+      new URL(path, import.meta.url), {
+        encoding: `utf8`
+      },
+    )
+  );
+}
+*/
 
 import express from 'express'
 import rateLimit from 'express-rate-limit'
@@ -25,23 +39,31 @@ const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
     max: 200 // limit each IP to 100 requests per windowMs
 });
-   
+
 // apply to all requests
 app.use(limiter);
 
 // subscriptions
 import * as Subscription from './model.js';
 
+const keys = {
+  publicKey: `BMp-ty5lbtH7FHkUHk9yOZj6jwSpKQpxz83opGTFw0J7Q4Vyh5OsfjUPK3sQwfuGQfhR28YVCKj8IEcndZ1SYy8`,
+  privateKey: `O312AfxTlQBaXVmup9oG9y0uL0Tr8vo-SX6oylnVu-w`,
+};
+
+// const keys = readJSONFile('./keys/cert.json')
+console.log(keys);
+
 // app settings
 app.engine('html', ejs.renderFile);
 app.use(express.static('./views'));
 
 // Service Worker Notifications
-// Generate your own vapid keys by running: 
-    // npm i web-push -g 
+// Generate your own vapid keys by running:
+    // npm i web-push -g
     // web-push generate-vapid-keys
-const publicVapidKey = '<<Public Key>>';
-const privateVapidKey = '<<Private Key>>';
+const publicVapidKey = `${keys.publicKey}`;
+const privateVapidKey = `${keys.privateKey}`;
 
 webpush.setVapidDetails('mailto:mail@someEmail.com', publicVapidKey, privateVapidKey);
 
@@ -50,7 +72,7 @@ app.post('/subscribe', jsonParser, async function(req, res) {
         let hash = objectHash(req.body);
         let subscription = req.body;
         let checkSubscription = await Subscription.Subscription.find({ 'hash' : hash });
-        
+
         let theMessage = JSON.stringify({ title: 'You have already subscribed', body: 'Although we appreciate you trying to again' });
         if(checkSubscription.length == 0) {
             const newSubscription = new Subscription.Subscription({

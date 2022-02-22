@@ -1,5 +1,8 @@
 # web-push-notifications
 
+<https://github.com/smpnjn/web-push-notifications>
+<https://javascript.plainenglish.io/creating-a-push-notification-system-with-service-workers-e3e1813f2b5>
+
 Please read the article here for more details: https://medium.com/javascript-in-plain-english/creating-a-push-notification-system-with-service-workers-e3e1813f2b5
 
 # Instructions
